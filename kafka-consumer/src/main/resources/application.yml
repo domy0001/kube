@@ -1,3 +1,5 @@
+server:
+  port: 8181
 kafkaProps:
   bootstrapAddress: ${KAFKA_BOOTSTRAP_ADDRESS}
   groupId: ${KAFKA_GROUP_ID}

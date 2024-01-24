@@ -1,2 +1,4 @@
+server:
+  port: 8080
 kafkaProps:
   bootstrapAddress: ${KAFKA_BOOTSTRAP_SERVER}
