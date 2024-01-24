@@ -1,0 +1,41 @@
+version: '1'
+services:
+  kafka:
+    image: confluentinc/cp-kafka:7.3.3
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "39092:39092"
+    environment:
+      KAFKA_LISTENERS: BROKER://kafka:19092,EXTERNAL://kafka:39092,CONTROLLER://kafka:9093, INTERNAL://kafka:39093
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka:19092,EXTERNAL://127.0.0.1:39092, INTERNAL://kafka:39093
+      KAFKA_INTER_BROKER_LISTENER_NAME: BROKER
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,BROKER:PLAINTEXT,EXTERNAL:PLAINTEXT, INTERNAL:PLAINTEXT
+      KAFKA_PROCESS_ROLES: 'controller,broker'
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093,2@kafka:9093,3@kafka:9093, 4@kafka:39093'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+
+  kafka-prod:
+    build:
+      context: ./kafka-producer
+      dockerfile: Dockerfile
+    hostname: kafka-prod
+    container_name: kafka-prod
+    ports:
+      - "39091:39091"
+      - "8080:8080"
+    env_file: "./kafka-producer/src/main/java/org/example/env/configuration.env"
+
+  kafka-consumer:
+    build:
+      context: ./kafka-consumer
+      dockerfile: Dockerfile
+    hostname: kafka-consumer
+    container_name: kafka-consumer
+    ports:
+      - "39090:39090"
+      - "8181:8181"
+    env_file: "./kafka-consumer/src/main/java/org/example/env/configuration.env"
+

@@ -1,0 +1,2 @@
+kafkaProps:
+  bootstrapAddress: ${KAFKA_BOOTSTRAP_SERVER}

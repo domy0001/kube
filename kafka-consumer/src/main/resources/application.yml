@@ -1,0 +1,4 @@
+kafkaProps:
+  bootstrapAddress: ${KAFKA_BOOTSTRAP_ADDRESS}
+  groupId: ${KAFKA_GROUP_ID}
+  topic: ${KAFKA_TOPIC}
