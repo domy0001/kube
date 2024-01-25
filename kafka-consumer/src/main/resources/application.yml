@@ -1,6 +1,6 @@
 server:
   port: 8181
-kafkaProps:
+kafka-properties:
   bootstrapAddress: ${KAFKA_BOOTSTRAP_ADDRESS}
   groupId: ${KAFKA_GROUP_ID}
   topic: ${KAFKA_TOPIC}

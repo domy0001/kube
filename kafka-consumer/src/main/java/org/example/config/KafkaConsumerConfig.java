@@ -9,7 +9,6 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.ProducerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,16 +18,17 @@ import java.util.Map;
 public class KafkaConsumerConfig {
 
     @Autowired
-    private KafkaProps kafkaProps;
+    private KafkaProperties kafkaProperties;
+
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaProps.bootstrapAddress);
+                kafkaProperties.bootstrapAddress);
         props.put(
                 ConsumerConfig.GROUP_ID_CONFIG,
-                kafkaProps.groupId);
+                kafkaProperties.groupId);
         props.put(
                 ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
                 StringDeserializer.class);
