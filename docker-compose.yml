@@ -6,6 +6,8 @@ services:
     hostname: kafka
     ports:
       - "9092:9092"
+    networks:
+      - kafkanet
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
@@ -15,6 +17,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
       KAFKA_PROCESS_ROLES: 'broker,controller'
+      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   kafka-producer:
     build:
@@ -22,6 +26,8 @@ services:
       dockerfile: Dockerfile
     hostname: kafka-producer
     container_name: kafka-producer
+    networks:
+      - kafkanet
     depends_on:
       - kafka
     ports:
@@ -35,6 +41,8 @@ services:
       dockerfile: Dockerfile
     hostname: kafka-consumer
     container_name: kafka-consumer
+    networks:
+      - kafkanet
     depends_on:
       - kafka
     ports:
@@ -42,3 +50,6 @@ services:
       - "8181:8181"
     env_file: "./kafka-consumer/src/main/java/org/example/env/configuration.env"
 
+networks:
+  kafkanet:
+    name: kafkanet

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-consumer-map
+data:
+  KAFKA_BOOTSTRAP_ADDRESS: "kafka:39093"
+  KAFKA_GROUP_ID: "kube-group-id"
+  KAFKA_TOPIC: "kube-topic"

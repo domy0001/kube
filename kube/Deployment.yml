@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-app-deployment
+  labels:
+    app: kube-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-app
+  template:
+    metadata:
+      labels:
+        app: kube-app
+    spec:
+      containers:
+        - name: kafka
+          image: confluentinc/cp-kafka
+          volumeMounts:
+            - name: kafka-broker-volume
+              mountPath: "/etc/broker"
+              readOnly: true
+        - name: kafka-consumer
+          image: kube-app-kafka-consumer:latest
+          volumeMounts:
+            - name: kafka-consumer-volume
+              mountPath: "/etc/consumer"
+              readOnly: true
+        - name: kafka-producer
+          image: kube-app-kafka-producer:latest
+          volumeMounts:
+            - name: kafka-producer-volume
+              mountPath: "/etc/producer"
+              readOnly: true
+      volumes:
+        - name: kafka-broker-volume
+          configMap:
+            name: kafka-broker-map
+        - name: kafka-consumer-volume
+          configMap:
+            name: kafka-consumer-map
+        - name: kafka-producer-volume
+          configMap:
+            name: kafka-producer-map
