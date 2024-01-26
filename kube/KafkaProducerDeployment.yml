@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-producer-deployment
+  labels:
+    app: kube-producer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-producer-deployment
+  template:
+    metadata:
+      labels:
+        app: kube-producer-deployment
+    spec:
+      containers:
+        - name: kafka-producer
+          image: localhost:5000/kube-app-kafka-producer:latest
+          command: [ "/bin/sh", "-c", "env" ]
+          envFrom:
+            - configMapRef:
+                name: kafka-producer-map
+          livenessProbe:
+            exec:
+              command:
+                - ls
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - ls
+            initialDelaySeconds: 5
+            periodSeconds: 5
